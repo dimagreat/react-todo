@@ -1,5 +1,10 @@
+// @flow
 import React from 'react';
 
-export function Task(props) {
+type Props = {
+  name: string,
+};
+
+export function Task(props: Props) {
   return <div>{props.name}</div>;
 }
