@@ -6,5 +6,5 @@ type Props = {
 };
 
 export function Task(props: Props) {
-  return <div>{props.name}</div>;
+  return <p>{props.name}</p>;
 }
