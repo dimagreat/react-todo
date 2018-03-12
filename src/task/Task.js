@@ -1,10 +1,8 @@
 // @flow
 import React from 'react';
 
-type Props = {
-  name: string,
-};
+import { type TaskEntity } from '../task-list/TaskList';
 
-export function Task(props: Props) {
+export function Task(props: TaskEntity) {
   return <p>{props.name}</p>;
 }

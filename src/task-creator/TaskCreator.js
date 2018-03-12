@@ -1,6 +1,8 @@
 // @flow
 import React from 'react';
 
+import { addTodoItem } from '../firebase';
+
 type Props = {
   createTask: (value: string) => void,
 };
@@ -19,9 +21,11 @@ export class TaskCreator extends React.Component<Props, State> {
   };
 
   handleSubmit = (event: Event) => {
-    this.props.createTask(this.state.value);
-    this.setState({ value: '' });
     event.preventDefault();
+    this.props.createTask(this.state.value);
+    addTodoItem(this.state.value).then(() => {
+      this.setState({ value: '' });
+    });
   };
 
   render() {

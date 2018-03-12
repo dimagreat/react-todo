@@ -3,21 +3,28 @@ import React from 'react';
 
 import { Task } from '../task/Task';
 import { TaskCreator } from '../task-creator/TaskCreator';
+import { getTodoDB } from '../firebase';
 
-type TaskType = {
+export type TaskEntity = {
   name: string,
 };
 
 type Props = {};
 
 type State = {
-  tasks: TaskType[],
+  tasks: TaskEntity[],
 };
 
 export class TaskList extends React.Component<Props, State> {
   state: State = {
-    tasks: [{ name: 'Eat this' }, { name: 'Eat that' }],
+    tasks: [],
   };
+
+  componentDidMount() {
+    getTodoDB().then((tasks: TaskEntity[]) => {
+      this.setState({ tasks: tasks.val().todos });
+    });
+  }
 
   render() {
     const { tasks } = this.state;
