@@ -1,24 +1,9 @@
 import * as firebase from 'firebase';
 
+import { getDatabase } from './getDatabase';
 import { todoModel } from './models';
 
-let database;
-
-export function firebaseInit() {
-  const projectId = process.env.REACT_APP_FIREBASE_PROJECT;
-  const config = {
-    apiKey: process.env.REACT_APP_FIREBASE_API,
-    authDomain: `${projectId}.firebaseapp.com`,
-    databaseURL: `https://${projectId}.firebaseio.com`,
-    projectId,
-    storageBucket: `${projectId}.appspot.com`,
-    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGE,
-  };
-
-  firebase.initializeApp(config);
-
-  database = firebase.database();
-}
+const database = getDatabase();
 
 export function getTodoDB() {
   return database.ref(`/`).once('value');

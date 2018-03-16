@@ -1,17 +1,17 @@
 // @flow
 import React from 'react';
 
-import { addTodoItem } from '../firebase';
+import { addTodoItem } from '../firebase/todos';
 
 type Props = {
-  createTask: (value: string) => void,
+  createTodo: () => void,
 };
 
 type State = {
   value: string,
 };
 
-export class TaskCreator extends React.Component<Props, State> {
+export class TodoCreator extends React.Component<Props, State> {
   state: State = {
     value: '',
   };
@@ -22,8 +22,8 @@ export class TaskCreator extends React.Component<Props, State> {
 
   handleSubmit = (event: Event) => {
     event.preventDefault();
-    this.props.createTask(this.state.value);
     addTodoItem(this.state.value).then(() => {
+      this.props.createTodo();
       this.setState({ value: '' });
     });
   };
@@ -32,7 +32,7 @@ export class TaskCreator extends React.Component<Props, State> {
     return (
       <form onSubmit={this.handleSubmit}>
         <input type="text" value={this.state.value} onChange={this.handleChange} />
-        <input type="submit" value="Add task" />
+        <input type="submit" value="Add todo" />
       </form>
     );
   }
