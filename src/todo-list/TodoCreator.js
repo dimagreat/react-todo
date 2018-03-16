@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import { addTodoItem } from '../firebase/todos';
+import { addTodoItem } from '../firebase/firebase-todo';
 
 type Props = {
   createTodo: () => void,

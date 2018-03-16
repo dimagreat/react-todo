@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Todo } from './Todo';
 import { TodoCreator } from './TodoCreator';
-import { getTodoDB } from '../firebase/todos';
+import { getActiveTodos } from '../firebase/firebase-todo';
 
 export type TodoEntity = {
   name: string,
@@ -28,19 +28,17 @@ export class TodoList extends React.Component<Props, State> {
     const { todos } = this.state;
     return (
       <div>
-        <TodoCreator createTodo={this.createTodo} />
-        <div>{todos.map((todo, index) => <Todo {...todo} key={index} />)}</div>
+        <TodoCreator createTodo={this.getTodos} />
+        <div>{Object.keys(todos).map((key, index) => <Todo {...todos[key]} key={index} />)}</div>
       </div>
     );
   }
 
-  getTodos = () => {
-    getTodoDB().then((tasks: TodoEntiry[]) => {
-      this.setState({ todos: tasks.val().todos });
-    });
-  };
-
-  createTodo = () => {
-    this.getTodos();
+  getTodos = async () => {
+    const data = await getActiveTodos();
+    if (!data || !data.val()) {
+      return;
+    }
+    this.setState({ todos: data.val() });
   };
 }
