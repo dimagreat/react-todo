@@ -11,7 +11,7 @@ type State = {
   value: string,
 };
 
-export class TodoCreator extends React.Component<Props, State> {
+export class TodoCreator extends React.PureComponent<Props, State> {
   state: State = {
     value: '',
   };
@@ -29,8 +29,11 @@ export class TodoCreator extends React.Component<Props, State> {
   };
 
   render() {
+    const style = {
+      margin: '5px auto',
+    };
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form style={style} onSubmit={this.handleSubmit}>
         <input type="text" value={this.state.value} onChange={this.handleChange} />
         <input type="submit" value="Add todo" />
       </form>

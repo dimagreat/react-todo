@@ -3,7 +3,9 @@ import React from 'react';
 
 import { Todo } from './Todo';
 import { TodoCreator } from './TodoCreator';
+import { TodoFilter } from './TodoFilter';
 import { getActiveTodos } from '../firebase/firebase-todo';
+import { ALL, COMPLETED, NOT_COMPLETED } from './constants';
 
 export type TodoEntity = {
   name: string,
@@ -13,11 +15,13 @@ type Props = {};
 
 type State = {
   todos: TodoEntity[],
+  filter: (todo?: TodoEntity) => boolean,
 };
 
-export class TodoList extends React.Component<Props, State> {
+export class TodoList extends React.PureComponent<Props, State> {
   state: State = {
     todos: [],
+    filter: () => true,
   };
 
   componentWillMount() {
@@ -29,6 +33,7 @@ export class TodoList extends React.Component<Props, State> {
     return (
       <div>
         <TodoCreator onCreate={this.getTodos} />
+        <TodoFilter onChangeFilter={this.onChangeFilter} />
         <div>
           {Object.keys(todos).map((id, index) => {
             const todo = todos[id];
@@ -47,11 +52,25 @@ export class TodoList extends React.Component<Props, State> {
     );
   }
 
+  onChangeFilter = (filter: string) => {
+    if (filter === ALL) {
+      this.setState({ filter: () => true });
+    }
+    if (filter === COMPLETED) {
+      this.setState({ filter: (todo: TodoEntity) => todo.isCompleted });
+    }
+    if (filter === NOT_COMPLETED) {
+      this.setState({ filter: (todo: TodoEntity) => !todo.isCompleted });
+    }
+    this.getTodos();
+  };
+
   getTodos = async () => {
     const data = await getActiveTodos();
     if (!data || !data.val()) {
       return;
     }
-    this.setState({ todos: data.val() });
+    const todos = Object.values(data.val()).filter(this.state.filter);
+    this.setState({ todos });
   };
 }
