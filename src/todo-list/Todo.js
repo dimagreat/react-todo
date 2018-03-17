@@ -1,11 +1,11 @@
 // @flow
 import React from 'react';
 
-import { updateTodoItem } from '../firebase/firebase-todo';
+import { TodoEntity } from './constants';
+import { updateTodoItem, removeTodoItem } from '../firebase/firebase-todo';
 
 type Props = {
-  name: string,
-  id: string,
+  todo: TodoEntity,
   onComplete: () => void,
 };
 
@@ -18,19 +18,26 @@ export class Todo extends React.PureComponent<Props> {
       width: '300px',
       margin: '10px auto',
     };
+    const { name, isCompleted } = this.props.todo;
     return (
       <div style={style}>
-        <p>{this.props.name}</p>
-        <p>{this.props.isCompleted && 'completed'}</p>
-        <button onClick={this.completeTodo}>Complete</button>
+        <p>{name}</p>
+        {isCompleted ? <p>completed</p> : <button onClick={this.completeTodo}>Complete</button>}
+        <button onClick={this.removeTodo}>Remove</button>
       </div>
     );
   }
 
   completeTodo = () => {
-    updateTodoItem(this.props.id, {
-      name: this.props.name,
+    const { todo, onComplete } = this.props;
+    updateTodoItem(todo.id, {
+      ...todo,
       isCompleted: true,
-    }).then(this.props.onComplete);
+    }).then(onComplete);
+  };
+
+  removeTodo = () => {
+    const { todo: { id }, onComplete } = this.props;
+    removeTodoItem(id).then(onComplete);
   };
 }

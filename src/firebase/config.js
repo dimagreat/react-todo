@@ -1,3 +1,4 @@
+// @flow
 const projectId = process.env.REACT_APP_FIREBASE_PROJECT;
 export const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API,

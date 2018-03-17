@@ -1,3 +1,4 @@
+// @flow
 import { firebaseDb } from './index';
 
 const path = '/todos';
@@ -6,7 +7,7 @@ export function getActiveTodos() {
   return firebaseDb.ref(`${path}`).once('value');
 }
 
-export function addTodoItem(name) {
+export function addTodoItem(name: string) {
   return firebaseDb.ref(`${path}`).push({ name, isCompleted: false });
 }
 
