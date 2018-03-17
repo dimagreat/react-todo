@@ -28,8 +28,21 @@ export class TodoList extends React.Component<Props, State> {
     const { todos } = this.state;
     return (
       <div>
-        <TodoCreator createTodo={this.getTodos} />
-        <div>{Object.keys(todos).map((key, index) => <Todo {...todos[key]} key={index} />)}</div>
+        <TodoCreator onCreate={this.getTodos} />
+        <div>
+          {Object.keys(todos).map((id, index) => {
+            const todo = todos[id];
+            return (
+              <Todo
+                name={todo.name}
+                isCompleted={todo.isCompleted}
+                id={id}
+                onComplete={this.getTodos}
+                key={index}
+              />
+            );
+          })}
+        </div>
       </div>
     );
   }

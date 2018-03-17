@@ -4,7 +4,7 @@ import React from 'react';
 import { addTodoItem } from '../firebase/firebase-todo';
 
 type Props = {
-  createTodo: () => void,
+  onCreate: () => void,
 };
 
 type State = {
@@ -23,7 +23,7 @@ export class TodoCreator extends React.Component<Props, State> {
   handleSubmit = (event: Event) => {
     event.preventDefault();
     addTodoItem(this.state.value).then(() => {
-      this.props.createTodo();
+      this.props.onCreate();
       this.setState({ value: '' });
     });
   };
