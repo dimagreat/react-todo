@@ -1,6 +1,5 @@
-// @flow
 import { firebaseDb } from './index';
-import { type TodoEntity } from '../todo-list/constants';
+import { TodoEntity } from '../todo-list/constants';
 
 const path = '/todos';
 

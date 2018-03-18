@@ -1,30 +1,27 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 
 import { Todo } from './Todo';
 import { TodoCreator } from './TodoCreator';
 import { TodoFilter } from './TodoFilter';
+import { ALL, COMPLETED, TodoEntity, NOT_COMPLETED } from './constants';
 import { getActiveTodos } from '../firebase/firebase-todo';
-import { ALL, COMPLETED, NOT_COMPLETED, type TodoEntity } from './constants';
 
-type Props = {};
+interface State {
+  todos: TodoEntity[];
+  filter: (todo: TodoEntity) => boolean;
+}
 
-type State = {
-  todos: TodoEntity[],
-  filter: (todo: TodoEntity) => boolean,
-};
-
-export class TodoList extends React.PureComponent<Props, State> {
-  state: State = {
-    todos: [],
+export class TodoList extends React.PureComponent<{}, State> {
+  public state: State = {
     filter: () => true,
+    todos: [],
   };
 
-  componentWillMount() {
+  public componentWillMount() {
     this.getTodos();
   }
 
-  render() {
+  public render() {
     return (
       <div>
         <TodoCreator onCreate={this.getTodos} />
@@ -38,7 +35,7 @@ export class TodoList extends React.PureComponent<Props, State> {
     );
   }
 
-  onChangeFilter = (filter: string) => {
+  private onChangeFilter = (filter: string) => {
     if (filter === ALL) {
       this.setState({ filter: (todo: TodoEntity) => true });
     }
@@ -49,9 +46,9 @@ export class TodoList extends React.PureComponent<Props, State> {
       this.setState({ filter: (todo: TodoEntity) => !todo.isCompleted });
     }
     this.getTodos();
-  };
+  }
 
-  getTodos = async () => {
+  private getTodos = async () => {
     const data = await getActiveTodos();
     if (!data || !data.val()) {
       return;
@@ -64,5 +61,5 @@ export class TodoList extends React.PureComponent<Props, State> {
       }))
       .filter(this.state.filter);
     this.setState({ todos: processedTodos });
-  };
+  }
 }

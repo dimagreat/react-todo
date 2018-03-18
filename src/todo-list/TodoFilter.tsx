@@ -1,32 +1,24 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 
 import { ALL, COMPLETED, NOT_COMPLETED } from './constants';
 
-type Props = {
-  onChangeFilter: (value: string) => void,
-};
+interface Props {
+  onChangeFilter: (value: string) => void;
+}
 
-type State = {
-  value: string,
-};
+interface State {
+  value: string;
+}
 
 export class TodoFilter extends React.PureComponent<Props, State> {
-  state: State = {
+  public state: State = {
     value: ALL,
   };
 
-  onChange = (event: SyntheticInputEvent<HTMLSelectElement>) => {
-    event.preventDefault();
-    const { value } = event.target;
-    this.setState({ value });
-    this.props.onChangeFilter(value);
-  };
-
-  render() {
+  public render() {
     const style = {
-      width: '200px',
       margin: '5px auto',
+      width: '200px',
     };
     return (
       <select style={style} onChange={this.onChange} value={this.state.value}>
@@ -35,5 +27,12 @@ export class TodoFilter extends React.PureComponent<Props, State> {
         <option value={NOT_COMPLETED}>Not Completed</option>
       </select>
     );
+  }
+
+  private onChange = (event: React.FormEvent<HTMLSelectElement>) => {
+    event.preventDefault();
+    const { value } = event.target as HTMLSelectElement;
+    this.setState({ value });
+    this.props.onChangeFilter(value);
   }
 }

@@ -1,20 +1,19 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 
-import { type TodoEntity } from './constants';
+import { TodoEntity } from './constants';
 import { updateTodoItem, removeTodoItem } from '../firebase/firebase-todo';
 
 type Props = {
   todo: TodoEntity,
-  onComplete: Function,
+  onComplete: () => void,
 };
 
 export class Todo extends React.PureComponent<Props> {
-  render() {
+  public render() {
     const style = {
       border: '1px solid #ccc',
       display: 'flex',
-      flexDirection: 'column',
+      flexDirection: 'column' as 'column',
       width: '300px',
       margin: '10px auto',
     };
@@ -28,16 +27,16 @@ export class Todo extends React.PureComponent<Props> {
     );
   }
 
-  completeTodo = () => {
+  private completeTodo = () => {
     const { todo, onComplete } = this.props;
     updateTodoItem(todo.id, {
       ...todo,
       isCompleted: true,
     }).then(onComplete);
-  };
+  }
 
-  removeTodo = () => {
+  private removeTodo = () => {
     const { todo: { id }, onComplete } = this.props;
     removeTodoItem(id).then(onComplete);
-  };
+  }
 }
