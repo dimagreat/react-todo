@@ -5,13 +5,13 @@ import { Todo } from './Todo';
 import { TodoCreator } from './TodoCreator';
 import { TodoFilter } from './TodoFilter';
 import { getActiveTodos } from '../firebase/firebase-todo';
-import { ALL, COMPLETED, NOT_COMPLETED, TodoEntity } from './constants';
+import { ALL, COMPLETED, NOT_COMPLETED, type TodoEntity } from './constants';
 
 type Props = {};
 
 type State = {
   todos: TodoEntity[],
-  filter: (todo?: TodoEntity) => boolean,
+  filter: (todo: TodoEntity) => boolean,
 };
 
 export class TodoList extends React.PureComponent<Props, State> {
@@ -25,13 +25,12 @@ export class TodoList extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { todos } = this.state;
     return (
       <div>
         <TodoCreator onCreate={this.getTodos} />
         <TodoFilter onChangeFilter={this.onChangeFilter} />
         <div>
-          {Object.values(todos).map((todo, index) => (
+          {this.state.todos.map((todo: TodoEntity, index) => (
             <Todo todo={todo} onComplete={this.getTodos} key={index} />
           ))}
         </div>
@@ -41,7 +40,7 @@ export class TodoList extends React.PureComponent<Props, State> {
 
   onChangeFilter = (filter: string) => {
     if (filter === ALL) {
-      this.setState({ filter: () => true });
+      this.setState({ filter: (todo: TodoEntity) => true });
     }
     if (filter === COMPLETED) {
       this.setState({ filter: (todo: TodoEntity) => todo.isCompleted });
@@ -58,7 +57,7 @@ export class TodoList extends React.PureComponent<Props, State> {
       return;
     }
     const todos = data.val();
-    const processedTodos = Object.keys(todos)
+    const processedTodos: TodoEntity[] = Object.keys(todos)
       .map((key, index) => ({
         ...todos[key],
         id: key,

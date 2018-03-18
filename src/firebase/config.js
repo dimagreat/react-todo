@@ -1,5 +1,5 @@
 // @flow
-const projectId = process.env.REACT_APP_FIREBASE_PROJECT;
+const projectId = process.env.REACT_APP_FIREBASE_PROJECT || '';
 export const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API,
   authDomain: `${projectId}.firebaseapp.com`,

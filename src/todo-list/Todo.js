@@ -1,12 +1,12 @@
 // @flow
 import React from 'react';
 
-import { TodoEntity } from './constants';
+import { type TodoEntity } from './constants';
 import { updateTodoItem, removeTodoItem } from '../firebase/firebase-todo';
 
 type Props = {
   todo: TodoEntity,
-  onComplete: () => void,
+  onComplete: Function,
 };
 
 export class Todo extends React.PureComponent<Props> {

@@ -4,7 +4,7 @@ import React from 'react';
 import { addTodoItem } from '../firebase/firebase-todo';
 
 type Props = {
-  onCreate: () => void,
+  onCreate: Function,
 };
 
 type State = {

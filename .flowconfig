@@ -1,5 +1,5 @@
 [ignore]
-/node_modules/*
+./node_modules/protobuf/src/bower.json
 [include]
 
 [libs]
