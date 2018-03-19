@@ -1,12 +1,13 @@
 import * as React from 'react';
 
 import { TodoEntity } from './constants';
-import { updateTodoItem, removeTodoItem } from '../firebase/firebase-todo';
 
-type Props = {
-  todo: TodoEntity,
-  onComplete: () => void,
-};
+import { removeTodoItem, updateTodoItem } from '../firebase/firebase-todo';
+
+interface Props {
+  todo: TodoEntity;
+  onComplete: () => void;
+}
 
 export class Todo extends React.PureComponent<Props> {
   public render() {
@@ -14,8 +15,8 @@ export class Todo extends React.PureComponent<Props> {
       border: '1px solid #ccc',
       display: 'flex',
       flexDirection: 'column' as 'column',
-      width: '300px',
       margin: '10px auto',
+      width: '300px',
     };
     const { name, isCompleted } = this.props.todo;
     return (
@@ -33,10 +34,10 @@ export class Todo extends React.PureComponent<Props> {
       ...todo,
       isCompleted: true,
     }).then(onComplete);
-  }
+  };
 
   private removeTodo = () => {
     const { todo: { id }, onComplete } = this.props;
     removeTodoItem(id).then(onComplete);
-  }
+  };
 }

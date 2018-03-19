@@ -1,10 +1,10 @@
 import * as React from 'react';
 
+import { getActiveTodos } from '../firebase/firebase-todo';
+import { ALL, COMPLETED, NOT_COMPLETED, TodoEntity } from './constants';
 import { Todo } from './Todo';
 import { TodoCreator } from './TodoCreator';
 import { TodoFilter } from './TodoFilter';
-import { ALL, COMPLETED, TodoEntity, NOT_COMPLETED } from './constants';
-import { getActiveTodos } from '../firebase/firebase-todo';
 
 interface State {
   todos: TodoEntity[];
@@ -46,7 +46,7 @@ export class TodoList extends React.PureComponent<{}, State> {
       this.setState({ filter: (todo: TodoEntity) => !todo.isCompleted });
     }
     this.getTodos();
-  }
+  };
 
   private getTodos = async () => {
     const data = await getActiveTodos();
@@ -61,5 +61,5 @@ export class TodoList extends React.PureComponent<{}, State> {
       }))
       .filter(this.state.filter);
     this.setState({ todos: processedTodos });
-  }
+  };
 }

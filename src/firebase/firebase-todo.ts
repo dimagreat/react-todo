@@ -1,5 +1,5 @@
-import { firebaseDb } from './index';
 import { TodoEntity } from '../todo-list/constants';
+import { firebaseDb } from './index';
 
 const path = '/todos';
 

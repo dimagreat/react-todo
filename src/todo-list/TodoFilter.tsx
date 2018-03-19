@@ -34,5 +34,5 @@ export class TodoFilter extends React.PureComponent<Props, State> {
     const { value } = event.target as HTMLSelectElement;
     this.setState({ value });
     this.props.onChangeFilter(value);
-  }
+  };
 }

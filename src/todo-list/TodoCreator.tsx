@@ -1,14 +1,16 @@
 import * as React from 'react';
 
+import Button from 'antd/lib/button';
+
 import { addTodoItem } from '../firebase/firebase-todo';
 
-type Props = {
-  onCreate: Function,
-};
+interface Props {
+  onCreate: () => void;
+}
 
-type State = {
-  value: string,
-};
+interface State {
+  value: string;
+}
 
 export class TodoCreator extends React.PureComponent<Props, State> {
   public state: State = {
@@ -22,14 +24,16 @@ export class TodoCreator extends React.PureComponent<Props, State> {
     return (
       <div style={style}>
         <input type="text" value={this.state.value} onChange={this.handleChange} />
-        <input type="button" value="Add todo" onClick={this.handleSubmit} />
+        <Button onClick={this.handleSubmit} type="primary">
+          Add Todo
+        </Button>
       </div>
     );
   }
 
   private handleChange = (event: React.FormEvent<HTMLInputElement>) => {
     this.setState({ value: (event.target as HTMLInputElement).value });
-  }
+  };
 
   private handleSubmit = (event: React.FormEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -37,5 +41,5 @@ export class TodoCreator extends React.PureComponent<Props, State> {
       this.props.onCreate();
       this.setState({ value: '' });
     });
-  }
+  };
 }
