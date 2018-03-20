@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import { Card, Icon, message } from 'antd';
+
 import { TodoEntity } from './constants';
 
 import { removeTodoItem, updateTodoItem } from '../firebase/firebase-todo';
@@ -12,19 +14,28 @@ interface Props {
 export class Todo extends React.PureComponent<Props> {
   public render() {
     const style = {
-      border: '1px solid #ccc',
-      display: 'flex',
-      flexDirection: 'column' as 'column',
-      margin: '10px auto',
-      width: '300px',
+      title: {
+        marginBottom: '0',
+      },
+      wrapper: {
+        margin: '10px auto',
+        width: '300px',
+      },
     };
     const { name, isCompleted } = this.props.todo;
+
+    const actions = [
+      isCompleted ? (
+        <Icon key={0} type="check" />
+      ) : (
+        <Icon key={0} type="check-circle" onClick={this.completeTodo} />
+      ),
+      <Icon key={1} type="close-circle" onClick={this.removeTodo} />,
+    ];
     return (
-      <div style={style}>
-        <p>{name}</p>
-        {isCompleted ? <p>completed</p> : <button onClick={this.completeTodo}>Complete</button>}
-        <button onClick={this.removeTodo}>Remove</button>
-      </div>
+      <Card hoverable={true} style={style.wrapper} actions={actions}>
+        <h1 style={style.title}>{name}</h1>
+      </Card>
     );
   }
 
@@ -33,11 +44,17 @@ export class Todo extends React.PureComponent<Props> {
     updateTodoItem(todo.id, {
       ...todo,
       isCompleted: true,
-    }).then(onComplete);
+    }).then(() => {
+      message.success('Todo Completed');
+      onComplete();
+    });
   };
 
   private removeTodo = () => {
     const { todo: { id }, onComplete } = this.props;
-    removeTodoItem(id).then(onComplete);
+    removeTodoItem(id).then(() => {
+      message.error('Todo Removed');
+      onComplete();
+    });
   };
 }

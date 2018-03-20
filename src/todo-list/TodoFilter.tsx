@@ -1,5 +1,8 @@
 import * as React from 'react';
 
+import { Button, Dropdown, Icon, Menu } from 'antd';
+import { ClickParam } from 'antd/lib/menu';
+
 import { ALL, COMPLETED, NOT_COMPLETED } from './constants';
 
 interface Props {
@@ -10,29 +13,41 @@ interface State {
   value: string;
 }
 
+const FILTER_MENU = {
+  [ALL]: 'All',
+  [COMPLETED]: 'Completed',
+  [NOT_COMPLETED]: 'Not Completed',
+};
+
 export class TodoFilter extends React.PureComponent<Props, State> {
   public state: State = {
-    value: ALL,
+    value: FILTER_MENU[ALL],
   };
 
   public render() {
+    const menu = (
+      <Menu onClick={this.onChange}>
+        {Object.keys(FILTER_MENU).map(key => <Menu.Item key={key}>{FILTER_MENU[key]}</Menu.Item>)}
+      </Menu>
+    );
+
     const style = {
-      margin: '5px auto',
-      width: '200px',
+      marginLeft: '8px',
+      width: '150px',
     };
+
     return (
-      <select style={style} onChange={this.onChange} value={this.state.value}>
-        <option value={ALL}>All</option>
-        <option value={COMPLETED}>Completed</option>
-        <option value={NOT_COMPLETED}>Not Completed</option>
-      </select>
+      // TODO: Update to Select
+      <Dropdown overlay={menu}>
+        <Button style={style}>
+          {this.state.value} <Icon type="down" />
+        </Button>
+      </Dropdown>
     );
   }
 
-  private onChange = (event: React.FormEvent<HTMLSelectElement>) => {
-    event.preventDefault();
-    const { value } = event.target as HTMLSelectElement;
-    this.setState({ value });
-    this.props.onChangeFilter(value);
+  private onChange = (click: ClickParam) => {
+    this.setState({ value: FILTER_MENU[click.key as string] });
+    this.props.onChangeFilter(click.key as string);
   };
 }

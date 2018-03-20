@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import Button from 'antd/lib/button';
+import { Input, message } from 'antd';
 
 import { addTodoItem } from '../firebase/firebase-todo';
 
@@ -19,14 +19,18 @@ export class TodoCreator extends React.PureComponent<Props, State> {
 
   public render() {
     const style = {
-      margin: '5px auto',
+      margin: '5px auto 15px',
+      width: 320,
     };
     return (
       <div style={style}>
-        <input type="text" value={this.state.value} onChange={this.handleChange} />
-        <Button onClick={this.handleSubmit} type="primary">
-          Add Todo
-        </Button>
+        <Input.Search
+          placeholder="Todo name"
+          enterButton="Add Todo"
+          value={this.state.value}
+          onChange={this.handleChange}
+          onSearch={this.handleSubmit}
+        />
       </div>
     );
   }
@@ -35,9 +39,9 @@ export class TodoCreator extends React.PureComponent<Props, State> {
     this.setState({ value: (event.target as HTMLInputElement).value });
   };
 
-  private handleSubmit = (event: React.FormEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    addTodoItem(this.state.value).then(() => {
+  private handleSubmit = (value: string) => {
+    addTodoItem(value).then(() => {
+      message.success('Todo Created!');
       this.props.onCreate();
       this.setState({ value: '' });
     });

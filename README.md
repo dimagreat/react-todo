@@ -3,7 +3,9 @@
 ## Stack
 
 - Create React App
+- Typescript
 - Firebase SDK
+- Ant Design
 
 ## Quick Start
 
