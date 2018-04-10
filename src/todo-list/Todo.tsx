@@ -1,9 +1,7 @@
 import * as React from 'react';
-
 import { Card, Icon, message } from 'antd';
 
 import { TodoEntity } from './constants';
-
 import { removeTodoItem, updateTodoItem } from '../firebase/firebase-todo';
 
 interface Props {

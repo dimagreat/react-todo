@@ -1,20 +1,23 @@
 import * as React from 'react';
+import { Button } from 'antd';
 
 import { getActiveTodos } from '../firebase/firebase-todo';
 import { ALL, COMPLETED, NOT_COMPLETED, TodoEntity } from './constants';
 import { Todo } from './Todo';
-import { TodoCreator } from './TodoCreator';
+import { TodoModal } from './TodoModal';
 import { TodoFilter } from './TodoFilter';
 
 interface State {
   todos: TodoEntity[];
   filter: (todo: TodoEntity) => boolean;
+  isTodoModalOpen: boolean;
 }
 
 export class TodoList extends React.PureComponent<{}, State> {
   public state: State = {
     filter: () => true,
     todos: [],
+    isTodoModalOpen: false,
   };
 
   public componentWillMount() {
@@ -24,7 +27,14 @@ export class TodoList extends React.PureComponent<{}, State> {
   public render() {
     return (
       <div>
-        <TodoCreator onCreate={this.getTodos} />
+        <Button type="primary" onClick={this.openTodoModal}>
+          Create Todo
+        </Button>
+        <TodoModal
+          isOpen={this.state.isTodoModalOpen}
+          onClose={this.closeTodoModal}
+          onCreate={this.getTodos}
+        />
         <TodoFilter onChangeFilter={this.onChangeFilter} />
         <div>
           {this.state.todos.map((todo: TodoEntity, index) => (
@@ -34,6 +44,10 @@ export class TodoList extends React.PureComponent<{}, State> {
       </div>
     );
   }
+
+  private openTodoModal = () => this.setState({ isTodoModalOpen: true });
+
+  private closeTodoModal = () => this.setState({ isTodoModalOpen: false });
 
   private onChangeFilter = (filter: string) => {
     if (filter === ALL) {
