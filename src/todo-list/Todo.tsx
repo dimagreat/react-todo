@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Card, Icon, message } from 'antd';
 
 import { TodoEntity } from './constants';
+import { PriorityIcon } from '../components/PriorityIcon';
 import { removeTodoItem, updateTodoItem } from '../firebase/firebase-todo';
 
 interface Props {
@@ -20,7 +21,7 @@ export class Todo extends React.PureComponent<Props> {
         width: '300px',
       },
     };
-    const { name, isCompleted } = this.props.todo;
+    const { title, isCompleted, priority } = this.props.todo;
 
     const actions = [
       isCompleted ? (
@@ -32,7 +33,8 @@ export class Todo extends React.PureComponent<Props> {
     ];
     return (
       <Card hoverable={true} style={style.wrapper} actions={actions}>
-        <h1 style={style.title}>{name}</h1>
+        <h1 style={style.title}>{title}</h1>
+        <PriorityIcon icon={priority} />
       </Card>
     );
   }

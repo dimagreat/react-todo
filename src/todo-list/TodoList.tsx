@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import { getActiveTodos } from '../firebase/firebase-todo';
 import { ALL, COMPLETED, NOT_COMPLETED, TodoEntity } from './constants';
 import { Todo } from './Todo';
-import { TodoModal } from './TodoModal';
+import { TodoModal } from './todo-modal/TodoModal';
 import { TodoFilter } from './TodoFilter';
 
 interface State {

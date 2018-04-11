@@ -7,8 +7,13 @@ export function getActiveTodos() {
   return firebaseDb.ref(`${path}`).once('value');
 }
 
-export function addTodoItem(name: string) {
-  return firebaseDb.ref(`${path}`).push({ name, isCompleted: false });
+interface Todo {
+  title: string;
+  priority: string;
+}
+
+export function addTodoItem(todo: Todo) {
+  return firebaseDb.ref(`${path}`).push({ ...todo, isCompleted: false });
 }
 
 export function updateTodoItem(key: string, value: TodoEntity) {
