@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Card, Icon, message } from 'antd';
+import { Card, Icon, Tag, message } from 'antd';
 
 import { TodoEntity } from './constants';
 import { PriorityIcon } from '../components/PriorityIcon';
@@ -11,18 +11,22 @@ interface Props {
 }
 
 export class Todo extends React.PureComponent<Props> {
+  private style = {
+    title: {
+      marginBottom: '0',
+    },
+    wrapper: {
+      margin: '10px auto',
+      width: '300px',
+    },
+    element: {
+      display: 'block',
+      marginBottom: 5,
+    },
+  };
   public render() {
-    const style = {
-      title: {
-        marginBottom: '0',
-      },
-      wrapper: {
-        margin: '10px auto',
-        width: '300px',
-      },
-    };
-    const { title, isCompleted, priority } = this.props.todo;
-
+    const { title, isCompleted, priority, categories } = this.props.todo;
+    const { element, wrapper, title: titleStyle } = this.style;
     const actions = [
       isCompleted ? (
         <Icon key={0} type="check" />
@@ -32,9 +36,14 @@ export class Todo extends React.PureComponent<Props> {
       <Icon key={1} type="close-circle" onClick={this.removeTodo} />,
     ];
     return (
-      <Card hoverable={true} style={style.wrapper} actions={actions}>
-        <h1 style={style.title}>{title}</h1>
-        <PriorityIcon icon={priority} />
+      <Card hoverable={true} style={wrapper} actions={actions}>
+        <h1 style={titleStyle}>{title}</h1>
+        <div style={element}>
+          <PriorityIcon icon={priority} />
+        </div>
+        <div style={element}>
+          {categories.map((category: string, index: number) => <Tag key={index}>{category}</Tag>)}
+        </div>
       </Card>
     );
   }

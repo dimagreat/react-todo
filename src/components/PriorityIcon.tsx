@@ -8,12 +8,21 @@ interface Props {
 }
 
 const PRIORITY_ICONS = {
-  [HIGH]: 'up-circle',
-  [NORMAL]: 'right-circle',
-  [LOW]: 'down-circle',
+  [HIGH]: {
+    type: 'up-circle',
+    color: 'red',
+  },
+  [NORMAL]: {
+    type: 'right-circle',
+    color: 'green',
+  },
+  [LOW]: {
+    type: 'down-circle',
+    color: 'grey',
+  },
 };
 
 export function PriorityIcon(props: Props) {
-  console.log(props.icon);
-  return <Icon type={PRIORITY_ICONS[props.icon]} />;
+  const { color, type } = PRIORITY_ICONS[props.icon];
+  return <Icon style={{ color }} type={type} />;
 }

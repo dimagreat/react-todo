@@ -1,10 +1,11 @@
 import { TodoEntity } from '../todo-list/constants';
 import { firebaseDb } from './index';
 
-const path = '/todos';
+const TODOS_PATH = '/todos';
+const CATEGORY_PATH = '/categories';
 
 export function getActiveTodos() {
-  return firebaseDb.ref(`${path}`).once('value');
+  return firebaseDb.ref(`${TODOS_PATH}`).once('value');
 }
 
 interface Todo {
@@ -13,13 +14,21 @@ interface Todo {
 }
 
 export function addTodoItem(todo: Todo) {
-  return firebaseDb.ref(`${path}`).push({ ...todo, isCompleted: false });
+  return firebaseDb.ref(`${TODOS_PATH}`).push({ ...todo, isCompleted: false });
 }
 
 export function updateTodoItem(key: string, value: TodoEntity) {
-  return firebaseDb.ref(`${path}/${key}`).update(value);
+  return firebaseDb.ref(`${TODOS_PATH}/${key}`).update(value);
 }
 
 export function removeTodoItem(key: string) {
-  return firebaseDb.ref(`${path}/${key}`).remove();
+  return firebaseDb.ref(`${TODOS_PATH}/${key}`).remove();
+}
+
+export function getCategories() {
+  return firebaseDb.ref(`${CATEGORY_PATH}`).once('value');
+}
+
+export function updateCategories(categories: string[]) {
+  return firebaseDb.ref(`${CATEGORY_PATH}`).set(categories);
 }

@@ -3,18 +3,21 @@ import { Input, message, Modal } from 'antd';
 
 import { addTodoItem } from '../../firebase/firebase-todo';
 import { SetPriority } from './SetPriority';
-import {  NORMAL } from '../constants';
+import { SetCategory } from './SetCategory';
+import { NORMAL } from '../constants';
 
 interface Props {
   onCreate: () => void;
   onClose: () => void;
   isOpen: boolean;
+  categories: string[];
 }
 
 interface State {
   title: string;
   isLoading: boolean;
   priority: string;
+  selectedCategories: string[];
 }
 
 export class TodoModal extends React.PureComponent<Props, State> {
@@ -22,6 +25,7 @@ export class TodoModal extends React.PureComponent<Props, State> {
     title: '',
     priority: NORMAL,
     isLoading: false,
+    selectedCategories: [],
   };
   private style = {
     marginBottom: 15,
@@ -29,8 +33,7 @@ export class TodoModal extends React.PureComponent<Props, State> {
 
   public render() {
     const { title, isLoading } = this.state;
-    const { isOpen, onClose } = this.props;
-
+    const { isOpen, onClose, categories } = this.props;
     return (
       <Modal
         title="Todo"
@@ -43,9 +46,15 @@ export class TodoModal extends React.PureComponent<Props, State> {
         <div style={this.style}>
           <SetPriority onChangePriority={this.updatePriority} />
         </div>
+        <div style={this.style}>
+          <SetCategory categories={categories} onSelectCategory={this.updateCategories} />
+        </div>
       </Modal>
     );
   }
+
+  private updateCategories = (selectedCategories: string[]) =>
+    this.setState({ selectedCategories });
 
   private updatePriority = (priority: string) => this.setState({ priority });
 
@@ -54,15 +63,20 @@ export class TodoModal extends React.PureComponent<Props, State> {
 
   private createTodo = () => {
     this.setState({ isLoading: true });
-    const { title, priority } = this.state;
-    addTodoItem({ title, priority }).then(this.onCreateSuccess);
+    const { title, priority, selectedCategories } = this.state;
+    const todo = {
+      title,
+      priority,
+      categories: selectedCategories,
+    };
+    addTodoItem(todo).then(this.onCreateSuccess);
   };
 
   private onCreateSuccess = () => {
     this.setState({ isLoading: false });
     message.success('Todo Created!');
     this.props.onCreate();
-    this.setState({ title: '' });
+    this.setState({ title: '', priority: NORMAL, selectedCategories: [] });
     this.props.onClose();
   };
 }
