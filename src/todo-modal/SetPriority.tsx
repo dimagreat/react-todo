@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Button, Menu, Dropdown, Icon } from 'antd';
 import { ClickParam } from 'antd/lib/menu';
 
-import { HIGH, NORMAL, LOW } from '../constants';
-import { PriorityIcon } from '../../components/PriorityIcon';
+import { HIGH, NORMAL, LOW } from '../todo-list/constants';
+import { PriorityIcon } from '../components/PriorityIcon';
 
 const PRIORITY_MENU = {
   [HIGH]: 'High',

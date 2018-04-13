@@ -11,5 +11,6 @@ export interface TodoEntity {
   id: string;
   isCompleted: boolean;
   priority: string;
+  description: string;
   categories: string[];
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Card, Icon, Tag, message } from 'antd';
+import { Tooltip, Card, Icon, Tag, message } from 'antd';
 
 import { TodoEntity } from './constants';
 import { PriorityIcon } from '../components/PriorityIcon';
@@ -25,7 +25,7 @@ export class Todo extends React.PureComponent<Props> {
     },
   };
   public render() {
-    const { title, isCompleted, priority, categories } = this.props.todo;
+    const { title, description, isCompleted, priority, categories } = this.props.todo;
     const { element, wrapper, title: titleStyle } = this.style;
     const actions = [
       isCompleted ? (
@@ -36,15 +36,17 @@ export class Todo extends React.PureComponent<Props> {
       <Icon key={1} type="close-circle" onClick={this.removeTodo} />,
     ];
     return (
-      <Card hoverable={true} style={wrapper} actions={actions}>
-        <h1 style={titleStyle}>{title}</h1>
-        <div style={element}>
-          <PriorityIcon icon={priority} />
-        </div>
-        <div style={element}>
-          {categories.map((category: string, index: number) => <Tag key={index}>{category}</Tag>)}
-        </div>
-      </Card>
+      <Tooltip placement="right" title={description}>
+        <Card hoverable={true} style={wrapper} actions={actions}>
+          <h1 style={titleStyle}>{title}</h1>
+          <div style={element}>
+            <PriorityIcon icon={priority} />
+          </div>
+          <div style={element}>
+            {categories.map((category: string, index: number) => <Tag key={index}>{category}</Tag>)}
+          </div>
+        </Card>
+      </Tooltip>
     );
   }
 

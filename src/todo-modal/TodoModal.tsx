@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { Input, message, Modal } from 'antd';
 
-import { addTodoItem } from '../../firebase/firebase-todo';
+import { addTodoItem } from '../firebase/firebase-todo';
 import { SetPriority } from './SetPriority';
 import { SetCategory } from './SetCategory';
-import { NORMAL } from '../constants';
+import { NORMAL } from '../todo-list/constants';
+
+const Textarea = Input.TextArea;
 
 interface Props {
   onCreate: () => void;
@@ -15,6 +17,7 @@ interface Props {
 
 interface State {
   title: string;
+  description: string;
   isLoading: boolean;
   priority: string;
   selectedCategories: string[];
@@ -23,16 +26,18 @@ interface State {
 export class TodoModal extends React.PureComponent<Props, State> {
   public state: State = {
     title: '',
+    description: '',
     priority: NORMAL,
     isLoading: false,
     selectedCategories: [],
   };
+  private defaultState = this.state;
   private style = {
     marginBottom: 15,
   };
 
   public render() {
-    const { title, isLoading } = this.state;
+    const { title, description, isLoading } = this.state;
     const { isOpen, onClose, categories } = this.props;
     return (
       <Modal
@@ -43,6 +48,13 @@ export class TodoModal extends React.PureComponent<Props, State> {
         onOk={this.createTodo}
       >
         <Input style={this.style} placeholder="Title" value={title} onChange={this.updateTitle} />
+        <Textarea
+          style={this.style}
+          placeholder="Description"
+          value={description}
+          onChange={this.updateDescription}
+          rows={4}
+        />
         <div style={this.style}>
           <SetPriority onChangePriority={this.updatePriority} />
         </div>
@@ -61,22 +73,25 @@ export class TodoModal extends React.PureComponent<Props, State> {
   private updateTitle = (event: React.FormEvent<HTMLInputElement>) =>
     this.setState({ title: (event.target as HTMLInputElement).value });
 
+  private updateDescription = (event: React.FormEvent<HTMLTextAreaElement>) =>
+    this.setState({ description: (event.target as HTMLTextAreaElement).value });
+
   private createTodo = () => {
     this.setState({ isLoading: true });
-    const { title, priority, selectedCategories } = this.state;
+    const { title, priority, description, selectedCategories } = this.state;
     const todo = {
       title,
       priority,
+      description,
       categories: selectedCategories,
     };
     addTodoItem(todo).then(this.onCreateSuccess);
   };
 
   private onCreateSuccess = () => {
-    this.setState({ isLoading: false });
     message.success('Todo Created!');
     this.props.onCreate();
-    this.setState({ title: '', priority: NORMAL, selectedCategories: [] });
+    this.setState({ ...this.defaultState, selectedCategories: [] });
     this.props.onClose();
   };
 }
