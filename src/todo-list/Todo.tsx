@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Tooltip, Card, Icon, Tag, message } from 'antd';
 
-import { TodoEntity } from './constants';
+import { TodoEntity } from '../shared/constants';
 import { PriorityIcon } from '../components/PriorityIcon';
 import { removeTodoItem, updateTodoItem } from '../firebase/firebase-todo';
 
@@ -43,7 +43,7 @@ export class Todo extends React.PureComponent<Props> {
             <PriorityIcon icon={priority} />
           </div>
           <div style={element}>
-            {categories.map((category: string, index: number) => <Tag key={index}>{category}</Tag>)}
+            {categories && categories.map((category: string, index: number) => <Tag key={index}>{category}</Tag>)}
           </div>
         </Card>
       </Tooltip>

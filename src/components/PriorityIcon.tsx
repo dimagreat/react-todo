@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Icon } from 'antd';
 
-import { HIGH, NORMAL, LOW } from '../todo-list/constants';
+import { HIGH, NORMAL, LOW } from '../shared/constants';
 
 interface Props {
   icon: string;

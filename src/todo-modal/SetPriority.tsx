@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { Button, Menu, Dropdown, Icon } from 'antd';
-import { ClickParam } from 'antd/lib/menu';
 
-import { HIGH, NORMAL, LOW } from '../todo-list/constants';
-import { PriorityIcon } from '../components/PriorityIcon';
+import { HIGH, NORMAL, LOW } from '../shared/constants';
+import { DropdownMenu, PriorityIcon } from '../components';
 
 const PRIORITY_MENU = {
   [HIGH]: 'High',
@@ -32,28 +30,16 @@ export class SetPriority extends React.PureComponent<Props, State> {
   };
 
   public render() {
-    const menu = (
-      <Menu onClick={this.onChange}>
-        {Object.keys(PRIORITY_MENU).map(key => (
-          <Menu.Item key={key}>{PRIORITY_MENU[key]}</Menu.Item>
-        ))}
-      </Menu>
-    );
-
     return (
       <div style={this.style}>
-        <Dropdown overlay={menu}>
-          <Button>
-            {this.state.value} <Icon type="down" />
-          </Button>
-        </Dropdown>
+        <DropdownMenu values={PRIORITY_MENU} default={PRIORITY_MENU[NORMAL]} onChange={this.onChange} />
         <PriorityIcon icon={this.state.icon} />
       </div>
     );
   }
 
-  private onChange = (click: ClickParam) => {
-    this.setState({ value: PRIORITY_MENU[click.key as string], icon: click.key as string });
-    this.props.onChangePriority(click.key as string);
+  private onChange = (value: string) => {
+    this.setState({ icon: value });
+    this.props.onChangePriority(value);
   };
 }

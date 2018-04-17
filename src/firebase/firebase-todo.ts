@@ -1,4 +1,4 @@
-import { TodoEntity } from '../todo-list/constants';
+import { TodoEntity } from '../shared/constants';
 import { firebaseDb } from './index';
 
 const TODOS_PATH = '/todos';

@@ -4,7 +4,7 @@ import { Input, message, Modal } from 'antd';
 import { addTodoItem } from '../firebase/firebase-todo';
 import { SetPriority } from './SetPriority';
 import { SetCategory } from './SetCategory';
-import { NORMAL } from '../todo-list/constants';
+import { NORMAL } from '../shared/constants';
 
 const Textarea = Input.TextArea;
 
