@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { Form, Tag, Input, Tooltip, Icon, message, Modal } from 'antd';
 
-const FormItem = Form.Item;
-
+import './SettingsModal.css';
 import { updateCategories } from '../firebase/firebase-todo';
+
+const FormItem = Form.Item;
 
 interface Props {
   onUpdate: () => void;
@@ -27,9 +28,6 @@ export class SettingsModal extends React.PureComponent<Props, State> {
     tags: [],
   };
   private input: Input;
-  private style = {
-    marginBottom: 10,
-  };
 
   public componentDidUpdate(prevProps: Props) {
     if (prevProps.isOpen !== this.props.isOpen) {
@@ -48,6 +46,7 @@ export class SettingsModal extends React.PureComponent<Props, State> {
         onCancel={onClose}
         confirmLoading={isLoading}
         okText="Save"
+        className="settings-wrapper"
         onOk={this.updateCategories}
       >
         <Form layout="vertical">
@@ -56,7 +55,7 @@ export class SettingsModal extends React.PureComponent<Props, State> {
               const isLongTag = tag.length > 20;
               const tagElem = (
                 <Tag
-                  style={this.style}
+                  className="margin-b"
                   key={tag}
                   closable={true}
                   afterClose={() => this.removeCategory(tag)}
@@ -65,19 +64,19 @@ export class SettingsModal extends React.PureComponent<Props, State> {
                 </Tag>
               );
               return isLongTag ? (
-                <Tooltip style={this.style} title={tag} key={tag}>
+                <Tooltip title={tag} key={tag}>
                   {tagElem}
                 </Tooltip>
               ) : (
-                  tagElem
-                );
+                tagElem
+              );
             })}
             {inputVisible && (
               <Input
                 ref={this.saveInputRef}
                 type="text"
                 size="small"
-                style={{ width: 105 }}
+                className="input"
                 value={inputValue}
                 onChange={this.handleInputChange}
                 onBlur={this.handleInputConfirm}
@@ -85,10 +84,10 @@ export class SettingsModal extends React.PureComponent<Props, State> {
               />
             )}
             {!inputVisible && (
-              <div style={{ display: 'inline' }} onClick={this.showInput}>
-                <Tag style={{ background: '#fff', borderStyle: 'dashed' }}>
+              <div className="new-tag-wrapper" onClick={this.showInput}>
+                <Tag className="new-tag">
                   <Icon type="plus" /> Add Category
-              </Tag>
+                </Tag>
               </div>
             )}
           </FormItem>

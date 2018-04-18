@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Tooltip, Card, Icon, Tag, message } from 'antd';
 
+import './Todo.css';
 import { TodoEntity } from '../shared/constants';
 import { PriorityIcon } from '../components/PriorityIcon';
 import { removeTodoItem, updateTodoItem } from '../firebase/firebase-todo';
@@ -11,22 +12,8 @@ interface Props {
 }
 
 export class Todo extends React.PureComponent<Props> {
-  private style = {
-    title: {
-      marginBottom: '0',
-    },
-    wrapper: {
-      margin: '10px auto',
-      width: '300px',
-    },
-    element: {
-      display: 'block',
-      marginBottom: 5,
-    },
-  };
   public render() {
     const { title, description, isCompleted, priority, categories } = this.props.todo;
-    const { element, wrapper, title: titleStyle } = this.style;
     const actions = [
       isCompleted ? (
         <Icon key={0} type="check" />
@@ -37,14 +24,17 @@ export class Todo extends React.PureComponent<Props> {
     ];
     return (
       <Tooltip placement="right" title={description}>
-        <Card hoverable={true} style={wrapper} actions={actions}>
-          <h1 style={titleStyle}>{title}</h1>
-          <div style={element}>
+        <Card className="todo" hoverable={true} actions={actions}>
+          <h1 className="title">{title}</h1>
+          <div className="priority">
             <PriorityIcon icon={priority} />
           </div>
-          <div style={element}>
-            {categories && categories.map((category: string, index: number) => <Tag key={index}>{category}</Tag>)}
-          </div>
+          {categories &&
+            categories.map((category: string, index: number) => (
+              <Tag className="margin-b" key={index}>
+                {category}
+              </Tag>
+            ))}
         </Card>
       </Tooltip>
     );

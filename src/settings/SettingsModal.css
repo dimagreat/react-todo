@@ -1,0 +1,16 @@
+.new-tag-wrapper {
+  display: inline;
+}
+
+.new-tag-wrapper .new-tag {
+  border-style: dashed;
+  background: #fff;
+}
+
+.settings-wrapper .input {
+  width: 105px;
+}
+
+.settings-wrapper .margin-b {
+  margin-bottom: 10px;
+}

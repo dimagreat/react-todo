@@ -3,8 +3,8 @@ import { Button } from 'antd';
 
 import { getActiveTodos } from '../firebase/firebase-todo';
 import { ALL, COMPLETED, NOT_COMPLETED, TodoEntity } from '../shared/constants';
-import { Todo } from './Todo';
-import { TodoModal } from '../todo-modal/TodoModal';
+import { Todo } from '../todo';
+import { TodoModal } from '../todo-modal';
 import { Filter, FilterOptions } from '../filter';
 
 interface Props {
@@ -74,7 +74,7 @@ export class TodoList extends React.PureComponent<Props, State> {
   private filterTodos = () => {
     const { todos, filter } = this.state;
     if (!filter) {
-      return this.setState({ filteredTodos: this.state.todos });
+      return;
     }
     const filteredTodos = todos.reduce((acc: TodoEntity[], todo: TodoEntity) => {
       if (filter.status === COMPLETED && !todo.isCompleted) {

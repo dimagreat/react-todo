@@ -1,22 +1,15 @@
 import * as React from 'react';
 import { Form, Switch, Collapse } from 'antd';
 
+import './Filter.css';
 import { DropdownMenu } from '../components';
 import { PRIORITY_MENU, STATUS_MENU, ALL, NOT_COMPLETED } from '../shared/constants';
 
 const Panel = Collapse.Panel;
 const FormItem = Form.Item;
 
-enum Options {
-  status,
-  priority,
-  withDescription,
-}
-
 export interface FilterOptions {
-  status: string;
-  priority: string;
-  withDescription: boolean;
+  [key: string]: string | boolean;
 }
 
 interface Props {
@@ -29,15 +22,15 @@ export class Filter extends React.PureComponent<Props, FilterOptions> {
     priority: '',
     withDescription: false,
   };
-  private style = {
-    width: 300,
-    margin: 'auto',
-  };
+
+  public componentDidMount() {
+    this.props.onUpdate(this.state);
+  }
 
   public render() {
     return (
-      <Collapse style={this.style}>
-        <Panel header="Filter todos" key="1">
+      <Collapse className="filter">
+        <Panel header="Filter" key="1">
           <FormItem label="Status">
             <DropdownMenu
               values={STATUS_MENU}
@@ -60,14 +53,17 @@ export class Filter extends React.PureComponent<Props, FilterOptions> {
     );
   }
 
-  private onChangeStatusFilter = (value: string) => this.onChangeFilter(Options.status, value);
+  private onChangeStatusFilter = (value: string) => this.onChangeFilter('status', value);
 
-  private onChangePriorityFilter = (value: string) => this.onChangeFilter(Options.priority, value);
+  private onChangePriorityFilter = (value: string) => this.onChangeFilter('priority', value);
 
   private onChangeDescriptionFilter = (checked: boolean) =>
-    this.onChangeFilter(Options.withDescription, checked);
+    this.onChangeFilter('withDescription', checked);
 
-  private onChangeFilter = (key: Options, value: string | boolean) => {
+  private onChangeFilter = (
+    key: string,
+    value: string | boolean
+  ) => {
     this.setState({ [key]: value }, () => this.props.onUpdate(this.state));
   };
 }

@@ -3,7 +3,7 @@ import { Button } from 'antd';
 
 import { getCategories } from '../firebase/firebase-todo';
 import { SettingsModal } from '../settings';
-import { TodoList } from '../todo-list/TodoList';
+import { TodoList } from '../todo-list';
 import './App.css';
 
 interface State {
