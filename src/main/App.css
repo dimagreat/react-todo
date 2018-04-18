@@ -1,8 +1,14 @@
 @import '~antd/dist/antd.css';
 
-.App {
+.app {
   text-align: center;
   display: flex;
   justify-content: center;
   flex-direction: column;
+}
+
+.settings {
+  position: absolute;
+  right: 35px;
+  top: 35px;
 }

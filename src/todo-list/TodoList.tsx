@@ -1,45 +1,28 @@
 import * as React from 'react';
-import { Button, Checkbox } from 'antd';
-import { CheckboxChangeEvent } from 'antd/lib/checkbox';
+import { Button } from 'antd';
 
-import { getActiveTodos, getCategories } from '../firebase/firebase-todo';
-import {
-  PRIORITY_MENU,
-  STATUS_MENU, ALL,
-  COMPLETED, NOT_COMPLETED, TodoEntity
-} from '../shared/constants';
+import { getActiveTodos } from '../firebase/firebase-todo';
+import { ALL, COMPLETED, NOT_COMPLETED, TodoEntity } from '../shared/constants';
 import { Todo } from './Todo';
 import { TodoModal } from '../todo-modal/TodoModal';
-import { CategoriesModal } from './CategoriesModal';
-import { DropdownMenu } from '../components';
+import { Filter, FilterOptions } from '../filter';
 
-interface Filter {
-  status: string;
-  priority: string;
-  withDescription: boolean;
+interface Props {
+  categories: string[];
 }
 
 interface State {
   todos: TodoEntity[];
   filteredTodos: TodoEntity[];
-  categories: string[];
-  filter: Filter;
   isTodoModalOpen: boolean;
-  isCategoriesModalOpen: boolean;
+  filter?: FilterOptions;
 }
 
-export class TodoList extends React.PureComponent<{}, State> {
+export class TodoList extends React.PureComponent<Props, State> {
   public state: State = {
-    filter: {
-      status: NOT_COMPLETED,
-      priority: '',
-      withDescription: false,
-    },
     todos: [],
     filteredTodos: [],
-    categories: [],
     isTodoModalOpen: false,
-    isCategoriesModalOpen: false,
   };
   private style = {
     buttons: {
@@ -52,20 +35,17 @@ export class TodoList extends React.PureComponent<{}, State> {
 
   public componentWillMount() {
     this.getTodos();
-    this.getCategories();
   }
 
   public render() {
-    const { isTodoModalOpen, isCategoriesModalOpen, filteredTodos, categories } = this.state;
+    const { isTodoModalOpen, filteredTodos } = this.state;
+    const { categories } = this.props;
 
     return (
       <div>
         <div style={this.style.buttons}>
           <Button type="primary" onClick={this.openTodoModal}>
             Create Todo
-          </Button>
-          <Button type="primary" onClick={this.openCategoriesModal}>
-            Update Categories
           </Button>
         </div>
 
@@ -75,15 +55,7 @@ export class TodoList extends React.PureComponent<{}, State> {
           onCreate={this.getTodos}
           categories={categories}
         />
-        <CategoriesModal
-          isOpen={isCategoriesModalOpen}
-          onClose={this.closeCategoriesModal}
-          onUpdate={this.getCategories}
-          categories={categories}
-        />
-        <DropdownMenu values={STATUS_MENU} default={STATUS_MENU[NOT_COMPLETED]} onChange={this.onChangeStatusFilter} />
-        <DropdownMenu values={PRIORITY_MENU} default={PRIORITY_MENU[ALL]} onChange={this.onChangePriorityFilter} />
-        <Checkbox onChange={this.onChangeDescriptionFilter}>Show Items with description</Checkbox>
+        <Filter onUpdate={this.updateFilter} />
         <div>
           {filteredTodos.map((todo: TodoEntity, index) => (
             <Todo todo={todo} onComplete={this.getTodos} key={index} />
@@ -93,55 +65,34 @@ export class TodoList extends React.PureComponent<{}, State> {
     );
   }
 
-  private openCategoriesModal = () => this.setState({ isCategoriesModalOpen: true });
-
-  private closeCategoriesModal = () => this.setState({ isCategoriesModalOpen: false });
-
   private openTodoModal = () => this.setState({ isTodoModalOpen: true });
 
   private closeTodoModal = () => this.setState({ isTodoModalOpen: false });
 
-  private onChangeStatusFilter = (value: string) => this.onChangeFilter('status', value);
-
-  private onChangePriorityFilter = (value: string) => this.onChangeFilter('priority', value);
-
-  private onChangeDescriptionFilter = (event: CheckboxChangeEvent) =>
-    this.onChangeFilter('withDescription', event.target.checked);
-
-  private onChangeFilter = (field: string, value: string | boolean) => {
-    this.setState({ filter: { ...this.state.filter, [field]: value } }, this.filterTodos);
-  };
+  private updateFilter = (filter: FilterOptions) => this.setState({ filter }, this.filterTodos);
 
   private filterTodos = () => {
     const { todos, filter } = this.state;
-    const filteredTodos = todos.reduce(
-      (acc: TodoEntity[], todo: TodoEntity) => {
-        if (filter.status === COMPLETED && !todo.isCompleted) {
-          return acc;
-        }
-        if (filter.status === NOT_COMPLETED && todo.isCompleted) {
-          return acc;
-        }
-        if (filter.priority && filter.priority !== ALL && filter.priority !== todo.priority) {
-          return acc;
-        }
-        if (filter.withDescription && todo.description.length === 0) {
-          return acc;
-        }
-        acc.push(todo);
-        return acc;
-      },
-      []);
-    this.setState({ filteredTodos });
-  }
-
-  private getCategories = async () => {
-    const data = await getCategories();
-    if (!data || !data.val()) {
-      return;
+    if (!filter) {
+      return this.setState({ filteredTodos: this.state.todos });
     }
-    const categories = data.val();
-    this.setState({ categories });
+    const filteredTodos = todos.reduce((acc: TodoEntity[], todo: TodoEntity) => {
+      if (filter.status === COMPLETED && !todo.isCompleted) {
+        return acc;
+      }
+      if (filter.status === NOT_COMPLETED && todo.isCompleted) {
+        return acc;
+      }
+      if (filter.priority && filter.priority !== ALL && filter.priority !== todo.priority) {
+        return acc;
+      }
+      if (filter.withDescription && todo.description.length === 0) {
+        return acc;
+      }
+      acc.push(todo);
+      return acc;
+    }, []);
+    this.setState({ filteredTodos });
   };
 
   private getTodos = async () => {
@@ -150,11 +101,10 @@ export class TodoList extends React.PureComponent<{}, State> {
       return;
     }
     const todos = data.val();
-    const processedTodos: TodoEntity[] = Object.keys(todos)
-      .map((key, index) => ({
-        ...todos[key],
-        id: key,
-      }));
+    const processedTodos: TodoEntity[] = Object.keys(todos).map((key, index) => ({
+      ...todos[key],
+      id: key,
+    }));
     this.setState({ todos: processedTodos }, this.filterTodos);
   };
 }

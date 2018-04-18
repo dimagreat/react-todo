@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Tag, Input, Tooltip, Icon, message, Modal } from 'antd';
+import { Form, Tag, Input, Tooltip, Icon, message, Modal } from 'antd';
+
+const FormItem = Form.Item;
 
 import { updateCategories } from '../firebase/firebase-todo';
 
@@ -17,7 +19,7 @@ interface State {
   inputValue: string;
 }
 
-export class CategoriesModal extends React.PureComponent<Props, State> {
+export class SettingsModal extends React.PureComponent<Props, State> {
   public state = {
     isLoading: false,
     inputVisible: false,
@@ -41,53 +43,56 @@ export class CategoriesModal extends React.PureComponent<Props, State> {
 
     return (
       <Modal
-        title="Update Categories"
+        title="Settings"
         visible={isOpen}
         onCancel={onClose}
         confirmLoading={isLoading}
+        okText="Save"
         onOk={this.updateCategories}
       >
-        <div>
-          {tags.map((tag: string, index) => {
-            const isLongTag = tag.length > 20;
-            const tagElem = (
-              <Tag
-                style={this.style}
-                key={tag}
-                closable={true}
-                afterClose={() => this.removeCategory(tag)}
-              >
-                {isLongTag ? `${tag.slice(0, 20)}...` : tag}
+        <Form layout="vertical">
+          <FormItem label="Customize categories:">
+            {tags.map((tag: string, index) => {
+              const isLongTag = tag.length > 20;
+              const tagElem = (
+                <Tag
+                  style={this.style}
+                  key={tag}
+                  closable={true}
+                  afterClose={() => this.removeCategory(tag)}
+                >
+                  {isLongTag ? `${tag.slice(0, 20)}...` : tag}
+                </Tag>
+              );
+              return isLongTag ? (
+                <Tooltip style={this.style} title={tag} key={tag}>
+                  {tagElem}
+                </Tooltip>
+              ) : (
+                  tagElem
+                );
+            })}
+            {inputVisible && (
+              <Input
+                ref={this.saveInputRef}
+                type="text"
+                size="small"
+                style={{ width: 105 }}
+                value={inputValue}
+                onChange={this.handleInputChange}
+                onBlur={this.handleInputConfirm}
+                onPressEnter={this.handleInputConfirm}
+              />
+            )}
+            {!inputVisible && (
+              <div style={{ display: 'inline' }} onClick={this.showInput}>
+                <Tag style={{ background: '#fff', borderStyle: 'dashed' }}>
+                  <Icon type="plus" /> Add Category
               </Tag>
-            );
-            return isLongTag ? (
-              <Tooltip style={this.style} title={tag} key={tag}>
-                {tagElem}
-              </Tooltip>
-            ) : (
-              tagElem
-            );
-          })}
-          {inputVisible && (
-            <Input
-              ref={this.saveInputRef}
-              type="text"
-              size="small"
-              style={{ width: 105 }}
-              value={inputValue}
-              onChange={this.handleInputChange}
-              onBlur={this.handleInputConfirm}
-              onPressEnter={this.handleInputConfirm}
-            />
-          )}
-          {!inputVisible && (
-            <div style={{ display: 'inline' }} onClick={this.showInput}>
-              <Tag style={{ background: '#fff', borderStyle: 'dashed' }}>
-                <Icon type="plus" /> Add Category
-              </Tag>
-            </div>
-          )}
-        </div>
+              </div>
+            )}
+          </FormItem>
+        </Form>
       </Modal>
     );
   }
