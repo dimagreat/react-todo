@@ -21,7 +21,7 @@ export class Todo extends React.PureComponent<Props> {
         <Icon key={0} type="check-circle" onClick={this.completeTodo} />
       ),
       <Icon key={1} type="close-circle" onClick={this.removeTodo} />,
-    ];
+    ]; 
     return (
       <Tooltip placement="right" title={description}>
         <Card className="todo" hoverable={true} actions={actions}>
