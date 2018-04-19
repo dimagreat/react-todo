@@ -15,7 +15,11 @@
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.ts?": ["tslint --project tsconfig.json", "git add"]
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.4.2",
@@ -31,6 +35,8 @@
     "babel-core": "^6.26.0",
     "babel-runtime": "^6.26.0",
     "css-loader": "^0.28.11",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.0.4",
     "prettier": "1.11.1",
     "prettier-tslint": "0.3.0",
     "ts-loader": "3.5.0",
