@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Input, message, Modal } from 'antd';
+import { Form, Input, message, Modal } from 'antd';
 
 import { addTodoItem } from '../firebase/firebase-todo';
 import { SetPriority } from './SetPriority';
@@ -7,6 +7,7 @@ import { SetCategory } from './SetCategory';
 import { NORMAL } from '../shared/constants';
 
 const Textarea = Input.TextArea;
+const FormItem = Form.Item;
 
 interface Props {
   onCreate: () => void;
@@ -32,9 +33,6 @@ export class TodoModal extends React.PureComponent<Props, State> {
     selectedCategories: [],
   };
   private defaultState = this.state;
-  private style = {
-    marginBottom: 15,
-  };
 
   public render() {
     const { title, description, isLoading } = this.state;
@@ -47,20 +45,22 @@ export class TodoModal extends React.PureComponent<Props, State> {
         confirmLoading={isLoading}
         onOk={this.createTodo}
       >
-        <Input style={this.style} placeholder="Title" value={title} onChange={this.updateTitle} />
-        <Textarea
-          style={this.style}
-          placeholder="Description"
-          value={description}
-          onChange={this.updateDescription}
-          rows={4}
-        />
-        <div style={this.style}>
-          <SetPriority onChangePriority={this.updatePriority} />
-        </div>
-        <div style={this.style}>
-          <SetCategory categories={categories} onSelectCategory={this.updateCategories} />
-        </div>
+        <FormItem label="Title">
+          <Input value={title} onChange={this.updateTitle} />
+        </FormItem>
+        <FormItem label="Description">
+          <Textarea value={description} onChange={this.updateDescription} rows={4} />
+        </FormItem>
+        <FormItem label="Priority">
+          <SetPriority isOpen={isOpen} onChangePriority={this.updatePriority} />
+        </FormItem>
+        <FormItem label="Categories">
+          <SetCategory
+            isOpen={isOpen}
+            categories={categories}
+            onSelectCategory={this.updateCategories}
+          />
+        </FormItem>
       </Modal>
     );
   }

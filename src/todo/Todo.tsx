@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Tooltip, Card, Icon, Tag, message } from 'antd';
+import { Popconfirm, Tooltip, Card, Icon, Tag, message } from 'antd';
 
 import './Todo.css';
 import { TodoEntity } from '../shared/constants';
@@ -20,8 +20,17 @@ export class Todo extends React.PureComponent<Props> {
       ) : (
         <Icon key={0} type="check-circle" onClick={this.completeTodo} />
       ),
-      <Icon key={1} type="close-circle" onClick={this.removeTodo} />,
-    ]; 
+      <Popconfirm
+        title="Do you want to remove this todo?"
+        onConfirm={this.removeTodo}
+        placement="right"
+        okText="Yes"
+        cancelText="No"
+        key={1}
+      >
+        <Icon key={1} type="close-circle" />
+      </Popconfirm>,
+    ];
     return (
       <Tooltip placement="right" title={description}>
         <Card className="todo" hoverable={true} actions={actions}>

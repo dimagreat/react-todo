@@ -5,6 +5,7 @@ const CheckableTag = Tag.CheckableTag;
 
 interface Props {
   categories: string[];
+  isOpen: boolean;
   onSelectCategory: (categories: string[]) => void;
 }
 
@@ -17,12 +18,17 @@ export class SetCategory extends React.Component<Props, State> {
     selectedTags: [],
   };
 
+  public componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.isOpen && this.props.isOpen !== nextProps.isOpen) {
+      this.setState({ selectedTags: [] });
+    }
+  }
+
   public render() {
     const { selectedTags } = this.state;
     const { categories } = this.props;
     return (
       <div>
-        <h6 style={{ marginRight: 8, display: 'inline' }}>Categories:</h6>
         {categories.map((tag: string, index: number) => (
           <CheckableTag
             key={index}

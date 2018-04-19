@@ -11,6 +11,7 @@ const PRIORITY_MENU = {
 
 interface Props {
   onChangePriority: (priority: string) => void;
+  isOpen: boolean;
 }
 
 interface State {
@@ -29,10 +30,23 @@ export class SetPriority extends React.PureComponent<Props, State> {
     alignItems: 'center' as 'center',
   };
 
+  public componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.isOpen && this.props.isOpen !== nextProps.isOpen) {
+      this.setState({
+        value: PRIORITY_MENU[NORMAL],
+        icon: NORMAL,
+      });
+    }
+  }
+
   public render() {
     return (
       <div style={this.style}>
-        <DropdownMenu values={PRIORITY_MENU} default={PRIORITY_MENU[NORMAL]} onChange={this.onChange} />
+        <DropdownMenu
+          values={PRIORITY_MENU}
+          default={PRIORITY_MENU[NORMAL]}
+          onChange={this.onChange}
+        />
         <PriorityIcon icon={this.state.icon} />
       </div>
     );
