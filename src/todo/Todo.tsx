@@ -28,7 +28,7 @@ export class Todo extends React.PureComponent<Props> {
         cancelText="No"
         key={1}
       >
-        <Icon key={1} type="close-circle" />
+        <Icon type="close-circle" />
       </Popconfirm>,
     ];
     return (
@@ -68,3 +68,4 @@ export class Todo extends React.PureComponent<Props> {
     });
   };
 }
+  

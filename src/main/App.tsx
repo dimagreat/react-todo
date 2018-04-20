@@ -25,9 +25,9 @@ export class App extends React.Component<{}, State> {
     const { categories, isSettingsModalOpen } = this.state;
 
     return (
-      <div className="app">
+      <div className="App">
         <h1>ToDo List!</h1>
-        <Button size="large" className="settings" shape="circle" icon="setting" onClick={this.openSettingsModal} />
+        <Button size="large" className="Settings" shape="circle" icon="setting" onClick={this.openSettingsModal} />
         <TodoList categories={categories} />
         <SettingsModal
           isOpen={isSettingsModalOpen}

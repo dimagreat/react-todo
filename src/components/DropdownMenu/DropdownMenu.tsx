@@ -2,10 +2,12 @@ import * as React from 'react';
 import { Button, Dropdown, Icon, Menu } from 'antd';
 import { ClickParam } from 'antd/lib/menu';
 
+import './DropdownMenu.css';
+
 interface Props {
   onChange: (value: string) => void;
   values: {
-    [key: string]: string
+    [key: string]: string;
   };
   default?: string;
 }
@@ -35,14 +37,9 @@ export class DropdownMenu extends React.PureComponent<Props, State> {
       </Menu>
     );
 
-    const style = {
-      marginLeft: '8px',
-      width: '150px',
-    };
-
     return (
       <Dropdown overlay={menu}>
-        <Button style={style}>
+        <Button className="DropdownMenu">
           {value} <Icon type="down" />
         </Button>
       </Dropdown>

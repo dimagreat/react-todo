@@ -1,16 +1,15 @@
-.new-tag-wrapper {
+.SettingsModal .new-category-wrapper {
   display: inline;
 }
 
-.new-tag-wrapper .new-tag {
+.SettingsModal .new-category {
   border-style: dashed;
   background: #fff;
 }
 
-.settings-wrapper .input {
+.SettingsModal .input {
   width: 105px;
 }
-
-.settings-wrapper .margin-b {
+.SettingsModal .margin-b {
   margin-bottom: 10px;
 }

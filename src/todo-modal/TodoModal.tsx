@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Form, Input, message, Modal } from 'antd';
 
 import { addTodoItem } from '../firebase/firebase-todo';
-import { SetPriority } from './SetPriority';
+import { SetPriority } from './SetPriority/SetPriority';
 import { SetCategory } from './SetCategory';
 import { NORMAL } from '../shared/constants';
 

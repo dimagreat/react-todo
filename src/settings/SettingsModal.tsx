@@ -46,7 +46,7 @@ export class SettingsModal extends React.PureComponent<Props, State> {
         onCancel={onClose}
         confirmLoading={isLoading}
         okText="Save"
-        className="settings-wrapper"
+        className="SettingsModal"
         onOk={this.updateCategories}
       >
         <Form layout="vertical">
@@ -84,8 +84,8 @@ export class SettingsModal extends React.PureComponent<Props, State> {
               />
             )}
             {!inputVisible && (
-              <div className="new-tag-wrapper" onClick={this.showInput}>
-                <Tag className="new-tag">
+              <div className="new-category-wrapper" onClick={this.showInput}>
+                <Tag className="new-category">
                   <Icon type="plus" /> Add Category
                 </Tag>
               </div>

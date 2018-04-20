@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Button } from 'antd';
 
+import './TodoList.css';
 import { getActiveTodos } from '../firebase/firebase-todo';
 import { ALL, COMPLETED, NOT_COMPLETED, TodoEntity } from '../shared/constants';
 import { Todo } from '../todo';
@@ -24,14 +25,6 @@ export class TodoList extends React.PureComponent<Props, State> {
     filteredTodos: [],
     isTodoModalOpen: false,
   };
-  private style = {
-    buttons: {
-      display: 'flex',
-      justifyContent: 'space-around' as 'space-around',
-      width: 400,
-      margin: '10px auto',
-    },
-  };
 
   public componentWillMount() {
     this.getTodos();
@@ -42,8 +35,8 @@ export class TodoList extends React.PureComponent<Props, State> {
     const { categories } = this.props;
 
     return (
-      <div>
-        <div style={this.style.buttons}>
+      <div className="TodoList">
+        <div className="buttons">
           <Button type="primary" onClick={this.openTodoModal}>
             Create Todo
           </Button>

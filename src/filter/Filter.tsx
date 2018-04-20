@@ -29,7 +29,7 @@ export class Filter extends React.PureComponent<Props, FilterOptions> {
 
   public render() {
     return (
-      <Collapse className="filter">
+      <Collapse className="Filter">
         <Panel header="Filter" key="1">
           <FormItem label="Status">
             <DropdownMenu
