@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button } from 'antd';
+import { Alert, Button } from 'antd';
 
 import { getCategories } from '../firebase/firebase-todo';
 import { SettingsModal } from '../settings';
@@ -24,10 +24,28 @@ export class App extends React.Component<{}, State> {
   public render() {
     const { categories, isSettingsModalOpen } = this.state;
 
+    if (!process.env.REACT_APP_FIREBASE_API) {
+      return (
+        <Alert
+          className="App-error"
+          message="Error"
+          description="Setup firebase before app launch."
+          type="error"
+          showIcon={true}
+        />
+      );
+    }
+
     return (
       <div className="App">
         <h1>ToDo List!</h1>
-        <Button size="large" className="Settings" shape="circle" icon="setting" onClick={this.openSettingsModal} />
+        <Button
+          size="large"
+          className="Settings"
+          shape="circle"
+          icon="setting"
+          onClick={this.openSettingsModal}
+        />
         <TodoList categories={categories} />
         <SettingsModal
           isOpen={isSettingsModalOpen}

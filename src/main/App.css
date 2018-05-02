@@ -5,6 +5,11 @@
   flex-direction: column;
 }
 
+.App-error {
+  width: 600px;
+  margin: 100px auto;
+}
+
 .App .Settings {
   position: absolute;
   right: 35px;
