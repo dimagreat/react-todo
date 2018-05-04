@@ -1,0 +1,8 @@
+.Login {
+  height: 100vh;
+  display: flex;
+}
+
+.Login-google {
+  margin: auto;
+}
