@@ -19,7 +19,10 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.ts?": ["tslint --project tsconfig.json", "git add"]
+    "*.ts?": [
+      "tslint --project tsconfig.json",
+      "git add"
+    ]
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.4.2",

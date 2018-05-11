@@ -1,17 +1,25 @@
 import * as React from 'react';
 import { Alert, Button } from 'antd';
+import * as firebase from 'firebase';
 
-import { getCategories } from '../firebase/firebase-todo';
+import './App.css';
+
 import { SettingsModal } from '../settings';
 import { TodoList } from '../todo-list';
-import './App.css';
+import { UserModal } from '../user-modal';
+
+import { getCategories } from '../firebase/firebase-todo';
+
+interface Props {
+  user: firebase.User;
+}
 
 interface State {
   isSettingsModalOpen: boolean;
   categories: string[];
 }
 
-export class App extends React.Component<{}, State> {
+export class App extends React.Component<Props, State> {
   public state = {
     isSettingsModalOpen: false,
     categories: [],
@@ -53,6 +61,7 @@ export class App extends React.Component<{}, State> {
           onUpdate={this.getCategories}
           categories={categories}
         />
+        <UserModal />
       </div>
     );
   }
