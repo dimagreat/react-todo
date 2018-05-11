@@ -1,8 +1,21 @@
 .Login {
-  height: 100vh;
   display: flex;
+  text-align: center;
+  flex-direction: column;
 }
 
-.Login-google {
+.Login-auth {
+  width: 400px;
+  margin: 100px auto 40px;
+}
+
+.Login-input {
+  margin-bottom: 15px;
+}
+
+.Login-others {
+  width: 300px;
   margin: auto;
+  display: flex;
+  justify-content: space-around;
 }
