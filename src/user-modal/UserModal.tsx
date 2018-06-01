@@ -1,7 +1,42 @@
 import * as React from 'react';
+import { Form, Button, Modal } from 'antd';
+import * as firebase from 'firebase';
 
-export class UserModal extends React.Component {
+import { firebaseAuth } from '../firebase';
+
+interface Props {
+  user: firebase.UserInfo;
+  isOpen: boolean;
+  onClose(): void;
+}
+
+const FormItem = Form.Item;
+
+export class UserModal extends React.PureComponent<Props> {
   public render() {
-    return <div />;
+    const { user: { displayName }, isOpen, onClose } = this.props;
+    return (
+      <Modal
+        title="Settings"
+        visible={isOpen}
+        onCancel={onClose}
+        okText="Save"
+        className="SettingsModal"
+        footer={[
+          <Button key="back" onClick={onClose}>
+            Cancel
+          </Button>,
+        ]}
+      >
+        <Form layout="vertical">
+          <FormItem label="User:">{displayName}</FormItem>
+          <Button onClick={this.signOut}>Sign Out</Button>
+        </Form>
+      </Modal>
+    );
+  }
+
+  private signOut() {
+    firebaseAuth.signOut();
   }
 }

@@ -11,17 +11,19 @@ import { UserModal } from '../user-modal';
 import { getCategories } from '../firebase/firebase-todo';
 
 interface Props {
-  user: firebase.User;
+  user: firebase.UserInfo;
 }
 
 interface State {
   isSettingsModalOpen: boolean;
+  isUserModalOpen: boolean;
   categories: string[];
 }
 
 export class App extends React.Component<Props, State> {
   public state = {
     isSettingsModalOpen: false,
+    isUserModalOpen: false,
     categories: [],
   };
 
@@ -30,7 +32,8 @@ export class App extends React.Component<Props, State> {
   }
 
   public render() {
-    const { categories, isSettingsModalOpen } = this.state;
+    const { categories, isSettingsModalOpen, isUserModalOpen } = this.state;
+    const { user } = this.props;
 
     if (!process.env.REACT_APP_FIREBASE_API) {
       return (
@@ -54,6 +57,13 @@ export class App extends React.Component<Props, State> {
           icon="setting"
           onClick={this.openSettingsModal}
         />
+        <Button
+          size="large"
+          className="User"
+          shape="circle"
+          icon="user"
+          onClick={this.openUserModal}
+        />
         <TodoList categories={categories} />
         <SettingsModal
           isOpen={isSettingsModalOpen}
@@ -61,7 +71,7 @@ export class App extends React.Component<Props, State> {
           onUpdate={this.getCategories}
           categories={categories}
         />
-        <UserModal />
+        <UserModal user={user} isOpen={isUserModalOpen} onClose={this.closeUserModal} />
       </div>
     );
   }
@@ -74,6 +84,10 @@ export class App extends React.Component<Props, State> {
     const categories = data.val();
     this.setState({ categories });
   };
+
+  private openUserModal = () => this.setState({ isUserModalOpen: true });
+
+  private closeUserModal = () => this.setState({ isUserModalOpen: false });
 
   private openSettingsModal = () => this.setState({ isSettingsModalOpen: true });
 
