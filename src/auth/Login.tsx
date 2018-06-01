@@ -28,8 +28,6 @@ export class Login extends React.PureComponent<{}, State> {
   public render() {
     const { user } = this.state;
 
-    console.log(user);
-    firebaseAuth.signOut();
     if (user) {
       return <App user={user} />;
     }
@@ -64,12 +62,6 @@ export class Login extends React.PureComponent<{}, State> {
           <Button size="large" onClick={this.signInWithGoogle}>
             Google
           </Button>
-          <Button size="large" onClick={this.signInWithFacebook}>
-            Facebook
-          </Button>
-          <Button size="large" onClick={this.signInWithGithub}>
-            Github
-          </Button>
         </div>
       </div>
     );
@@ -92,18 +84,8 @@ export class Login extends React.PureComponent<{}, State> {
     });
   };
 
-  private signInWithFacebook = () => {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    firebaseAuth.signInWithPopup(provider);
-  };
-
   private signInWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
-    firebaseAuth.signInWithPopup(provider);
-  };
-
-  private signInWithGithub = () => {
-    const provider = new firebase.auth.GithubAuthProvider();
     firebaseAuth.signInWithPopup(provider);
   };
 }
