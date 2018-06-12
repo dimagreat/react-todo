@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Form, Input, message, Modal } from 'antd';
 
-import { addTodoItem } from '../firebase/firebase-todo';
+import { firebaseApi } from '../firebase/firebase-api';
 import { SetPriority } from './SetPriority/SetPriority';
 import { SetCategory } from './SetCategory';
 import { NORMAL } from '../shared/constants';
@@ -107,12 +107,13 @@ export class TodoModal extends React.PureComponent<Props, State> {
     this.setState({ isValid: this.state.model.title.length > 0 });
   }
 
-  private createTodo = () => {
+  private createTodo = async () => {
     if (!this.state.isValid) {
       return;
     }
     this.setState({ isLoading: true });
-    addTodoItem(this.state.model).then(this.onCreateSuccess);
+    await firebaseApi.addTodoItem(this.state.model);
+    this.onCreateSuccess();
   };
 
   private onCreateSuccess = () => {

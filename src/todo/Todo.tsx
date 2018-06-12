@@ -4,7 +4,7 @@ import { Popconfirm, Tooltip, Card, Icon, Tag, message } from 'antd';
 import './Todo.css';
 import { TodoEntity } from '../shared/constants';
 import { PriorityIcon } from '../components/PriorityIcon';
-import { removeTodoItem, updateTodoItem } from '../firebase/firebase-todo';
+import { firebaseApi } from '../firebase/firebase-api';
 
 interface Props {
   todo: TodoEntity;
@@ -49,23 +49,21 @@ export class Todo extends React.PureComponent<Props> {
     );
   }
 
-  private completeTodo = () => {
+  private completeTodo = async () => {
     const { todo, onComplete } = this.props;
-    updateTodoItem(todo.id, {
+    await firebaseApi.updateTodoItem(todo.id, {
       ...todo,
       isCompleted: true,
-    }).then(() => {
-      message.success('Todo Completed');
-      onComplete();
     });
+    message.success('Todo Completed');
+    onComplete();
   };
 
-  private removeTodo = () => {
+  private removeTodo = async () => {
     const { todo: { id }, onComplete } = this.props;
-    removeTodoItem(id).then(() => {
-      message.error('Todo Removed');
-      onComplete();
-    });
+
+    await firebaseApi.removeTodoItem(id);
+    onComplete();
+    message.error('Todo Removed');
   };
 }
-  

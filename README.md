@@ -12,6 +12,6 @@
 ```shell
 git clone https://github.com/dimagreat/react-todo.git
 cd react-todo
-yarn install
+yarn
 yarn start
 ```

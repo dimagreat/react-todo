@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button } from 'antd';
 
 import './TodoList.css';
-import { getActiveTodos } from '../firebase/firebase-todo';
+import { firebaseApi } from '../firebase/firebase-api';
 import { ALL, COMPLETED, NOT_COMPLETED, TodoEntity } from '../shared/constants';
 import { Todo } from '../todo';
 import { TodoModal } from '../todo-modal';
@@ -26,7 +26,7 @@ export class TodoList extends React.PureComponent<Props, State> {
     isTodoModalOpen: false,
   };
 
-  public componentWillMount() {
+  public componentDidMount() {
     this.getTodos();
   }
 
@@ -89,8 +89,9 @@ export class TodoList extends React.PureComponent<Props, State> {
   };
 
   private getTodos = async () => {
-    const data = await getActiveTodos();
+    const data = await firebaseApi.getActiveTodos();
     if (!data || !data.val()) {
+      this.setState({ todos: [], filteredTodos: [] });
       return;
     }
     const todos = data.val();

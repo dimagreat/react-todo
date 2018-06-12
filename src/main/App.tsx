@@ -8,7 +8,7 @@ import { SettingsModal } from '../settings';
 import { TodoList } from '../todo-list';
 import { UserModal } from '../user-modal';
 
-import { getCategories } from '../firebase/firebase-todo';
+import { firebaseApi } from '../firebase/firebase-api';
 
 interface Props {
   user: firebase.UserInfo;
@@ -29,6 +29,7 @@ export class App extends React.Component<Props, State> {
   };
 
   public componentWillMount() {
+    firebaseApi.setUid(this.props.user.uid);
     this.getCategories();
   }
 
@@ -83,7 +84,7 @@ export class App extends React.Component<Props, State> {
   }
 
   private getCategories = async () => {
-    const data = await getCategories();
+    const data = await firebaseApi.getCategories();
     if (!data || !data.val()) {
       return;
     }

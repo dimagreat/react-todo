@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Form, Tag, Input, Tooltip, Icon, message, Modal } from 'antd';
 
 import './SettingsModal.css';
-import { updateCategories } from '../firebase/firebase-todo';
+import { firebaseApi } from '../firebase/firebase-api';
 
 const FormItem = Form.Item;
 
@@ -123,9 +123,10 @@ export class SettingsModal extends React.PureComponent<Props, State> {
 
   private saveInputRef = (input: Input) => (this.input = input);
 
-  private updateCategories = () => {
+  private updateCategories = async () => {
     this.setState({ isLoading: true });
-    updateCategories(this.state.tags).then(this.onCreateSuccess);
+    await firebaseApi.updateCategories(this.state.tags);
+    this.onCreateSuccess();
   };
 
   private onCreateSuccess = () => {
