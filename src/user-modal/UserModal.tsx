@@ -4,10 +4,13 @@ import * as firebase from 'firebase';
 
 import { firebaseAuth } from '../firebase';
 
+import { LOGIN_ROUTE } from '../router';
+
 interface Props {
   user: firebase.UserInfo;
   isOpen: boolean;
   onClose(): void;
+  changeRoute(route: string): void;
 }
 
 const FormItem = Form.Item;
@@ -36,7 +39,8 @@ export class UserModal extends React.PureComponent<Props> {
     );
   }
 
-  private signOut() {
+  private signOut = () => {
     firebaseAuth.signOut();
-  }
+    this.props.changeRoute(LOGIN_ROUTE);
+  };
 }

@@ -1,1 +1,1 @@
-export * from './Login';
+export { LoginConsumer as Login } from './LoginConsumer';

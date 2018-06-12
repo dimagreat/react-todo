@@ -12,6 +12,7 @@ import { getCategories } from '../firebase/firebase-todo';
 
 interface Props {
   user: firebase.UserInfo;
+  changeRoute: (route: string) => void;
 }
 
 interface State {
@@ -71,7 +72,12 @@ export class App extends React.Component<Props, State> {
           onUpdate={this.getCategories}
           categories={categories}
         />
-        <UserModal user={user} isOpen={isUserModalOpen} onClose={this.closeUserModal} />
+        <UserModal
+          changeRoute={this.props.changeRoute}
+          user={user}
+          isOpen={isUserModalOpen}
+          onClose={this.closeUserModal}
+        />
       </div>
     );
   }

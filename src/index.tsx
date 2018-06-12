@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import './index.css';
-import { Login } from './auth';
+import { Router } from './router';
 
-ReactDOM.render(<Login />, document.getElementById('root'));
+ReactDOM.render(<Router />, document.getElementById('root'));
